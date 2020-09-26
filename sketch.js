@@ -10,9 +10,11 @@ var box1, box2, box3, box4, box5, box6, box7, box8;
 var box9, box10,box11, box12, box13, box14, box15, box16;
 var hexagon;
 var score=0;
+var backgroundImg
+var bg = "Pink.png";
 function preload()
 {
-
+  getBackgroundImg()
 }
 
 function setup() {
@@ -55,8 +57,11 @@ Engine.run(engine);
 
 
 function draw() {
+  if(backgroundImg)
+        background(backgroundImg);
+ 
+
   rectMode(CENTER);
-  background("white");
   Engine.update(engine)
   
   ledge.display();
@@ -94,8 +99,8 @@ sling.display();
 
 
 
-fill("orange");
-strokeWeight(0.5)
+fill("white");
+strokeWeight(3)
  text("Score: "+score, 200,200)
  
 }
@@ -111,4 +116,23 @@ function keyPressed(){
   Matter.Body.setPosition(hexagon.body, {x:100,y:300});
   sling.attach(hexagon.body);
   }
+  }
+
+  async function getBackgroundImg(){
+    var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata");
+    var responseJSON = await response.json();
+    
+    var datetime = responseJSON.datetime;
+    var hour = datetime.slice(11,13);
+    
+    if(hour>=0600 && hour<=1700){
+      bg = "Pink.png";
+  }
+  else{
+     
+      bg = "Black.png";
+  }
+
+  backgroundImg = loadImage(bg);
+  console.log(backgroundImg);
   }
